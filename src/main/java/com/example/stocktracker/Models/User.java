@@ -1,6 +1,9 @@
 package com.example.stocktracker.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -22,5 +25,8 @@ public class User {
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "stockId")
     )
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Stock> stocks = new HashSet<>();
 }
