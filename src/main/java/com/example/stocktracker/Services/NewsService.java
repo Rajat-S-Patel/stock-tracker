@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
@@ -18,17 +19,22 @@ public class NewsService {
 
     public StockNewsSingle getNewsByUUID(UUID uuid){
         RestTemplate restTemplate = new RestTemplate();
-        String finalUrl = NewsUrl + "uuid/" + uuid + "?api_token=" + apiKey;
-        StockNewsSingle response = restTemplate.getForObject(finalUrl,StockNewsSingle.class);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(NewsUrl+"uuid/"+uuid);
+        builder.queryParam("api_token",apiKey);
+        StockNewsSingle response = restTemplate.getForObject(builder.toUriString(),StockNewsSingle.class);
 
         return response;
     }
 
-    public StockNews getAllNews(){
+    public StockNews getAllNews(Map<String,String> params){
         RestTemplate restTemplate  = new RestTemplate();
-        String finalUrl = NewsUrl + "all?api_token="+apiKey;
-        StockNews response = restTemplate.getForObject(finalUrl,StockNews.class);
-        System.out.println("news: "+response);
+
+        UriComponentsBuilder builder= UriComponentsBuilder.fromUriString(NewsUrl+"all");
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            builder.queryParam(entry.getKey(),entry.getValue());
+        }
+        builder.queryParam("api_token",apiKey);
+        StockNews response = restTemplate.getForObject(builder.toUriString(),StockNews.class);
         return response;
     }
 }

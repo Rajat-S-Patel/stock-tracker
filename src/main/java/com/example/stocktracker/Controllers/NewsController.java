@@ -4,6 +4,7 @@ import com.example.stocktracker.Services.NewsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -21,7 +22,7 @@ public class NewsController {
     }
 
     @GetMapping("/news/all")
-    public ResponseEntity<?> getAllNews(){
-        return ResponseEntity.ok().body(newsService.getAllNews());
+    public ResponseEntity<?> getAllNews(@RequestParam Map<String,String> params){
+        return ResponseEntity.ok().body(newsService.getAllNews(params));
     }
 }

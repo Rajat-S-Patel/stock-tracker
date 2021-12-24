@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +39,6 @@ public class JWTUtil {
         return claimsResolver.apply(claims);
     }
 
-
     //for retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
@@ -57,7 +58,6 @@ public class JWTUtil {
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
-
     //while creating the token -
     //1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
     //2. Sign the JWT using the HS512 algorithm and secret key.
@@ -67,6 +67,15 @@ public class JWTUtil {
                 .signWith(SignatureAlgorithm.HS512, secretKey).compact();
     }
 
+    public void expireToken(String token){
+        Claims claims = getAllClaimsFromToken(token);
+        System.out.println("before:" + getExpirationDateFromToken(token));
+        claims.setExpiration(null);
+        final Date expiration = getExpirationDateFromToken(token);
+        System.out.println("after: "+getExpirationDateFromToken(token));
+        System.out.println("expired: "+expiration.before(new Date()));
+
+    }
 
     //validate token
     public Boolean validateToken(String token, UserDetails userDetails) {
