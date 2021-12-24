@@ -2,7 +2,9 @@ package com.example.stocktracker.Models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,6 +28,9 @@ public class User {
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "stockId")
     )
+
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Stock> stocks=new HashSet<>();
 
