@@ -1,5 +1,6 @@
-package com.example.stocktracker.POJO;
+package com.example.stocktracker.POJO.SearchResponse;
 
+import com.example.stocktracker.POJO.SearchResponse.Results;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

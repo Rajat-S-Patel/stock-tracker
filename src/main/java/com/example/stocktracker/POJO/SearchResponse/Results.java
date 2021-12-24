@@ -1,4 +1,4 @@
-package com.example.stocktracker.POJO;
+package com.example.stocktracker.POJO.SearchResponse;
 
 public class Results {
     String symbol;
