@@ -1,6 +1,7 @@
 package com.example.stocktracker.Controllers;
 
 import com.example.stocktracker.Models.User;
+import com.example.stocktracker.Response.MessageResponse;
 import com.example.stocktracker.Response.LoginResponse;
 import com.example.stocktracker.Services.UserService;
 import com.example.stocktracker.config.MyUserDetailsService;
@@ -41,6 +42,7 @@ public class UserController {
     public ResponseEntity<?> createUser(@RequestBody User user){
         User savedUser = userService.createUser(user);
         System.out.println("user: "+savedUser);
+        if(savedUser == null) return ResponseEntity.ok(new MessageResponse(MessageResponse.ERROR_TYPE,"Username already registered"));
         return ResponseEntity.ok().body(savedUser);
     }
 

@@ -13,6 +13,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
@@ -38,18 +43,16 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user").permitAll()
                 .antMatchers("/user-logout").authenticated()
                 .antMatchers("/search/{query}").permitAll()
-                .antMatchers("/get-stock/{tickerName}").permitAll()
-                .antMatchers("/get-chart-data/{tickerName}").permitAll()
+                .antMatchers("/get-stock/*").permitAll()
                 .antMatchers("/get-stock-summary").permitAll()
                 .antMatchers("/get-market-summary").permitAll()
                 .antMatchers("/get-trending-stocks/{region}").permitAll()
                 .antMatchers("/stock-history").permitAll()
-                .antMatchers("/watchlist").authenticated()
                 .and().authorizeRequests()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.cors();
         http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
 
     }

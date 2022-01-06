@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 public class StockController {
     @Value("${api.key}")
     private String key;
@@ -37,6 +38,9 @@ public class StockController {
     @Value("${api.CHART_DATA}")
     private String CHART_DATA;
 
+    @Value("${api.RECOMMENDATION}")
+    private String STOCK_RECOMMENDATION;
+
     private ResponseEntity<String> apiCaller(String uri) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
@@ -53,6 +57,11 @@ public class StockController {
     @GetMapping("/get-stock/{tickerName}")
     public ResponseEntity<String> getStock(@PathVariable String tickerName) throws IOException, InterruptedException {
         return apiCaller(GET_STOCK_BY_TICKER + tickerName);
+    }
+
+    @GetMapping("/recommendation/{tickerName}")
+    public ResponseEntity<String> getRecommendation(@PathVariable String tickerName) throws IOException, InterruptedException {
+        return apiCaller(STOCK_RECOMMENDATION+tickerName);
     }
 
     @GetMapping("/get-stock-summary")   //  get-stock-summary?ticker=AAPL&region=IN&modules=summaryDetail
